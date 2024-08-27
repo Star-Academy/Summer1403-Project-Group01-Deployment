@@ -18,7 +18,7 @@ db:
   resources:
     limits:
       cpu: 2000m
-      ephemeralStorage: 5000Mi
+      ephemeralStorage: 3000Mi
       memory: 3000Mi
     requests:
       cpu: 2000m
