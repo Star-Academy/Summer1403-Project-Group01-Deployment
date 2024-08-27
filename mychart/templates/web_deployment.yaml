@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.webApp.name }}
+  labels:
+    app: {{ .Values.webApp.app }}
+spec:
+  replicas: {{ .Values.webApp.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.webApp.app }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.webApp.app }}
+    spec:
+      containers:
+        - name: {{ .Values.webApp.container.name }}
+          image: {{ .Values.webApp.container.image }}
+          imagePullPolicy: {{ .Values.webApp.container.imagePullPolicy }}
+          resources:
+            limits:
+              cpu: {{ .Values.webApp.resources.limits.cpu }}
+              ephemeral-storage: {{ .Values.webApp.resources.limits.ephemeralStorage }}
+              memory: {{ .Values.webApp.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.webApp.resources.requests.cpu }}
+              ephemeral-storage: {{ .Values.webApp.resources.requests.ephemeralStorage }}
+              memory: {{ .Values.webApp.resources.requests.memory }}
+          ports:
+            - containerPort: {{ .Values.webApp.container.port }}
+          env:
+            - name: ConnectionStrings__DefaultConnection
+              value: {{ .Values.webApp.env.connectionString | quote }}
+      initContainers:
+        - name: {{ .Values.webApp.initContainer.name }}
+          image: {{ .Values.webApp.initContainer.image }}
+          imagePullPolicy: {{ .Values.webApp.initContainer.imagePullPolicy }}
+          resources:
+            limits:
+              cpu: {{ .Values.webApp.resources.limits.cpu }}
+              ephemeral-storage: {{ .Values.webApp.resources.limits.ephemeralStorage }}
+              memory: {{ .Values.webApp.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.webApp.resources.requests.cpu }}
+              ephemeral-storage: {{ .Values.webApp.resources.requests.ephemeralStorage }}
+              memory: {{ .Values.webApp.resources.requests.memory }}
+          env:
+            - name: ConnectionStrings__DefaultConnection
+              value: {{ .Values.webApp.env.connectionString | quote }}

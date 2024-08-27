@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.db.name }}
+  labels:
+    app: {{ .Values.db.app }}
+spec:
+  replicas: {{ .Values.db.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.db.app }}
+  serviceName: {{ .Values.db.service.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.db.app }}
+    spec:
+      containers:
+        - name: {{ .Values.db.container.name }}
+          image: {{ .Values.db.container.image }}
+          imagePullPolicy: {{ .Values.db.container.imagePullPolicy }}
+          ports:
+            - containerPort: {{ .Values.db.container.port }}
+          resources:
+            limits:
+              cpu: {{ .Values.db.resources.limits.cpu }}
+              ephemeral-storage: {{ .Values.db.resources.limits.ephemeralStorage }}
+              memory: {{ .Values.db.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.db.resources.requests.cpu }}
+              ephemeral-storage: {{ .Values.db.resources.requests.ephemeralStorage }}
+              memory: {{ .Values.db.resources.requests.memory }}
+          env:
+            - name: POSTGRES_USER
+              value: {{ .Values.db.env.POSTGRES_USER | quote }}
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.db.env.POSTGRES_PASSWORD | quote }}
+            - name: POSTGRES_DB
+              value: {{ .Values.db.env.POSTGRES_DB | quote }}
+            - name: HOST
+              value: {{ .Values.db.env.HOST | quote }}
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
