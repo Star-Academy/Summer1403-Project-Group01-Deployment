@@ -36,7 +36,7 @@ angular:
   replicaCount: 1
   container:
     name: angular
-    image: mohammadsadeghmontazeri/starfront:v0.7.0
+    image: mohammadsadeghmontazeri/starfront:v0.8.0
     imagePullPolicy: Always
     port: 80
   resources:
@@ -61,12 +61,12 @@ webApp:
   replicaCount: 1
   container:
     name: web-app
-    image: mohammadsadeghmontazeri/starback:latest
+    image: mohammadsadeghmontazeri/starback:v0.14.0-dev.0
     imagePullPolicy: IfNotPresent
     port: 80
   initContainer:
     name: migrate-db
-    image: mohammadsadeghmontazeri/migratestar:latest
+    image: mohammadsadeghmontazeri/migratestar:v0.14.0-dev.0
     imagePullPolicy: IfNotPresent
   resources:
     limits:
