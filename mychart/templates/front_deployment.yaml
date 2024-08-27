@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.angular.name }}
+  labels:
+    app: {{ .Values.angular.app }}
+spec:
+  replicas: {{ .Values.angular.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.angular.app }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.angular.app }}
+    spec:
+      containers:
+        - name: {{ .Values.angular.container.name }}
+          image: {{ .Values.angular.container.image }}
+          imagePullPolicy: {{ .Values.angular.container.imagePullPolicy }}
+          resources:
+            limits:
+              cpu: {{ .Values.angular.resources.limits.cpu }}
+              ephemeral-storage: {{ .Values.angular.resources.limits.ephemeralStorage }}
+              memory: {{ .Values.angular.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.angular.resources.requests.cpu }}
+              ephemeral-storage: {{ .Values.angular.resources.requests.ephemeralStorage }}
+              memory: {{ .Values.angular.resources.requests.memory }}
+          ports:
+            - containerPort: {{ .Values.angular.container.port }}

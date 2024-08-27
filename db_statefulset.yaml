@@ -19,6 +19,15 @@ spec:
         - name: postgresql
           image: postgres:15
           imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 1000m
+              ephemeral-storage: 1000Mi
+              memory: 1000Mi
+            requests:
+              cpu: 100m
+              ephemeral-storage: 100Mi
+              memory: 100Mi
           ports:
             - containerPort: 5432
           volumeMounts:

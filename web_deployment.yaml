@@ -18,6 +18,15 @@ spec:
         - name: web-app
           image: mohammadsadeghmontazeri/starback:latest
           imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 1000m
+              ephemeral-storage: 1000Mi
+              memory: 1000Mi
+            requests:
+              cpu: 100m
+              ephemeral-storage: 100Mi
+              memory: 100Mi
           ports:
             - containerPort: 80
           env:
@@ -27,6 +36,15 @@ spec:
         - name: migrate-db
           image: mohammadsadeghmontazeri/migratestar:latest
           imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 1000m
+              ephemeral-storage: 1000Mi
+              memory: 1000Mi
+            requests:
+              cpu: 100m
+              ephemeral-storage: 100Mi
+              memory: 100Mi
           env:
             - name: ConnectionStrings__DefaultConnection
               value: "Host=postgresql;Database=YourDatabaseName;Username=yourusername;Password=yourpassword"
