@@ -38,7 +38,7 @@ angular:
     name: angular
     image: mohammadsadeghmontazeri/starfront:v0.8.7
     imagePullPolicy: Always
-    port: 80
+    port: 4000
   resources:
     limits:
       cpu: 2000m
@@ -51,8 +51,8 @@ angular:
   service:
     name: angular-service
     type: NodePort
-    port: 80
-    targetPort: 80
+    port: 4000
+    targetPort: 4000
     nodePort: 30081
 
 webApp:
