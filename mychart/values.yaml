@@ -61,12 +61,12 @@ webApp:
   replicaCount: 1
   container:
     name: web-app
-    image: mohammadsadeghmontazeri/starback:v0.15.1-dev.0
+    image: mohammadsadeghmontazeri/starback:v0.15.1-dev.1
     imagePullPolicy: IfNotPresent
     port: 80
   initContainer:
     name: migrate-db
-    image: mohammadsadeghmontazeri/migratestar:v0.15.1-dev.0
+    image: mohammadsadeghmontazeri/migratestar:v0.15.1-dev.1
     imagePullPolicy: IfNotPresent
   resources:
     limits:
