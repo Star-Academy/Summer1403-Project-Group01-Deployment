@@ -30,8 +30,46 @@ spec:
           ports:
             - containerPort: {{ .Values.webApp.container.port }}
           env:
-            - name: ConnectionStrings__DefaultConnection
-              value: {{ .Values.webApp.env.connectionString | quote }}
+            - name: DB_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: web-app-secret
+                  key: connectionString
+            - name: JWT_ISSUER
+              valueFrom:
+                secretKeyRef:
+                  name: web-app-secret
+                  key: JWT_ISSUER
+            - name: JWT_AUDIENCE
+              valueFrom:
+                secretKeyRef:
+                  name: web-app-secret
+                  key: JWT_AUDIENCE
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: web-app-secret
+                  key: JWT_KEY
+            - name: ROOTUSER_ROLE
+              valueFrom:
+                secretKeyRef:
+                  name: web-app-secret
+                  key: ROOTUSER_ROLE
+            - name: ROOTUSER_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: web-app-secret
+                  key: ROOTUSER_USERNAME
+            - name: ROOTUSER_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: web-app-secret
+                  key: ROOTUSER_EMAIL
+            - name: ROOTUSER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: web-app-secret
+                  key: ROOTUSER_PASSWORD
       initContainers:
         - name: {{ .Values.webApp.initContainer.name }}
           image: {{ .Values.webApp.initContainer.image }}
@@ -46,5 +84,8 @@ spec:
               ephemeral-storage: {{ .Values.webApp.resources.requests.ephemeralStorage }}
               memory: {{ .Values.webApp.resources.requests.memory }}
           env:
-            - name: ConnectionStrings__DefaultConnection
-              value: {{ .Values.webApp.env.connectionString | quote }}
+            - name: DB_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: web-app-secret
+                  key: connectionString

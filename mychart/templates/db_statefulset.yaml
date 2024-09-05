@@ -32,13 +32,25 @@ spec:
               memory: {{ .Values.db.resources.requests.memory }}
           env:
             - name: POSTGRES_USER
-              value: {{ .Values.db.env.POSTGRES_USER | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
-              value: {{ .Values.db.env.POSTGRES_PASSWORD | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
-              value: {{ .Values.db.env.POSTGRES_DB | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: POSTGRES_DB
             - name: HOST
-              value: {{ .Values.db.env.HOST | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: HOST
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data

@@ -1,3 +1,6 @@
+# values.yaml
+
+# Database Configuration
 db:
   name: database
   app: database
@@ -10,63 +13,65 @@ db:
   pvc:
     name: postgres-pvc
     storage: 1Gi
-  env:
-    POSTGRES_USER: "yourusername"
-    POSTGRES_PASSWORD: "yourpassword"
-    POSTGRES_DB: "YourDatabaseName"
-    HOST: "postgresql"
+  secret:
+    POSTGRES_USER: "yourusername"             # Base64 encoded in the Secret manifest
+    POSTGRES_PASSWORD: "yourpassword"         # Base64 encoded in the Secret manifest
+    POSTGRES_DB: "YourDatabaseName"           # Base64 encoded in the Secret manifest
+    HOST: "postgresql"                        # Base64 encoded in the Secret manifest
   resources:
     limits:
-      cpu: 2000m
-      ephemeralStorage: 5000Mi
-      memory: 3000Mi
+      cpu: 1000m
+      ephemeralStorage: 1000Mi
+      memory: 1000Mi
     requests:
-      cpu: 2000m
-      ephemeralStorage: 2000Mi
-      memory: 2000Mi
+      cpu: 1000m
+      ephemeralStorage: 1000Mi
+      memory: 1000Mi
   service:
     name: postgresql
     type: ClusterIP
     port: 5432
     targetPort: 5432
 
+# Angular Frontend Configuration (if needed)
 angular:
   name: angular
   app: angular
   replicaCount: 1
   container:
     name: angular
-    image: mohammadsadeghmontazeri/hello:latest
+    image: mohammadsadeghmontazeri/starfront:v0.12.2
     imagePullPolicy: Always
-    port: 80
+    port: 4000
   resources:
     limits:
-      cpu: 2000m
-      ephemeralStorage: 3000Mi
-      memory: 3000Mi
+      cpu: 1000m
+      ephemeralStorage: 1000Mi
+      memory: 1000Mi
     requests:
-      cpu: 2000m
-      ephemeralStorage: 2000Mi
-      memory: 2000Mi
+      cpu: 1000m
+      ephemeralStorage: 1000Mi
+      memory: 1000Mi
   service:
     name: angular-service
     type: NodePort
-    port: 80
-    targetPort: 80
+    port: 4000
+    targetPort: 4000
     nodePort: 30081
 
+# Web Application Configuration
 webApp:
   name: web-app
   app: web-app
   replicaCount: 1
   container:
     name: web-app
-    image: mohammadsadeghmontazeri/starback:latest
+    image: mohammadsadeghmontazeri/starback:v0.15.1-dev.3
     imagePullPolicy: IfNotPresent
     port: 80
   initContainer:
     name: migrate-db
-    image: mohammadsadeghmontazeri/migratestar:latest
+    image: mohammadsadeghmontazeri/migratestar:v0.15.1-dev.3
     imagePullPolicy: IfNotPresent
   resources:
     limits:
@@ -77,8 +82,15 @@ webApp:
       cpu: 100m
       ephemeralStorage: 100Mi
       memory: 100Mi
-  env:
-    connectionString: "Host=postgresql;Database=YourDatabaseName;Username=yourusername;Password=yourpassword"
+  secret:
+    connectionString: "Host=postgresql;Database=YourDatabaseName;Username=yourusername;Password=yourpassword" 
+    JWT_ISSUER: "http://localhost:5000"       # Base64 encoded in the Secret manifest
+    JWT_AUDIENCE: "http://localhost:5000"     # Base64 encoded in the Secret manifest
+    JWT_KEY: "sjmcabnishcpasichquwh108hd29dh12wcf1hni1nci9vh9p920u1dhx08122hiokasnx89"  # Base64 encoded in the Secret manifest
+    ROOTUSER_ROLE: "Admin"                    # Base64 encoded in the Secret manifest
+    ROOTUSER_USERNAME: "root"                 # Base64 encoded in the Secret manifest
+    ROOTUSER_EMAIL: "root@example.com"        # Base64 encoded in the Secret manifest
+    ROOTUSER_PASSWORD: "Root@123"   # Base64 encoded in the Secret manifest
   service:
     name: web-app-service
     type: NodePort
