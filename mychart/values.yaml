@@ -1,3 +1,6 @@
+# values.yaml
+
+# Database Configuration
 db:
   name: database
   app: database
@@ -10,11 +13,11 @@ db:
   pvc:
     name: postgres-pvc
     storage: 1Gi
-  env:
-    POSTGRES_USER: "yourusername"
-    POSTGRES_PASSWORD: "yourpassword"
-    POSTGRES_DB: "YourDatabaseName"
-    HOST: "postgresql"
+  secret:
+    POSTGRES_USER: "yourusername"             # Base64 encoded in the Secret manifest
+    POSTGRES_PASSWORD: "yourpassword"         # Base64 encoded in the Secret manifest
+    POSTGRES_DB: "YourDatabaseName"           # Base64 encoded in the Secret manifest
+    HOST: "postgresql"                        # Base64 encoded in the Secret manifest
   resources:
     limits:
       cpu: 1000m
@@ -30,6 +33,7 @@ db:
     port: 5432
     targetPort: 5432
 
+# Angular Frontend Configuration (if needed)
 angular:
   name: angular
   app: angular
@@ -55,6 +59,7 @@ angular:
     targetPort: 4000
     nodePort: 30081
 
+# Web Application Configuration
 webApp:
   name: web-app
   app: web-app
@@ -77,8 +82,15 @@ webApp:
       cpu: 100m
       ephemeralStorage: 100Mi
       memory: 100Mi
-  env:
-    connectionString: "Host=postgresql;Database=YourDatabaseName;Username=yourusername;Password=yourpassword"
+  secret:
+    connectionString: "Host=postgresql;Database=YourDatabaseName;Username=yourusername;Password=yourpassword" 
+    JWT_ISSUER: "http://localhost:5000"       # Base64 encoded in the Secret manifest
+    JWT_AUDIENCE: "http://localhost:5000"     # Base64 encoded in the Secret manifest
+    JWT_KEY: "sjmcabnishcpasichquwh108hd29dh12wcf1hni1nci9vh9p920u1dhx08122hiokasnx89"  # Base64 encoded in the Secret manifest
+    ROOTUSER_ROLE: "Admin"                    # Base64 encoded in the Secret manifest
+    ROOTUSER_USERNAME: "root"                 # Base64 encoded in the Secret manifest
+    ROOTUSER_EMAIL: "root@example.com"        # Base64 encoded in the Secret manifest
+    ROOTUSER_PASSWORD: "Root@123"   # Base64 encoded in the Secret manifest
   service:
     name: web-app-service
     type: NodePort
