@@ -40,7 +40,7 @@ angular:
   replicaCount: 1
   container:
     name: angular
-    image: mohammadsadeghmontazeri/starfront:v0.12.2
+    image: mohammadsadeghmontazeri/starfront:v0.13.0
     imagePullPolicy: Always
     port: 4000
   resources:
